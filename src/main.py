@@ -4,12 +4,14 @@
 from kivy.app import App
 from kivy.logger import Logger
 from kivy.factory import Factory
+from kivy.clock import Clock
 import wavegen_arduino
 
 
 class WaveGenApp(App):
     title = 'Waveform Generator'
     generator = wavegen_arduino.WaveGenArduino(None,Logger.info)
+    repeat_event = None
 
     def on_start(self):
         if not self.generator.connect():
@@ -42,18 +44,26 @@ class WaveGenApp(App):
 
     def set_mode(self, is_burst=False):
         if not is_burst:
-            self.root.ids['pulse']. disabled = True
+            self.root.ids['pulse'].disabled = True
+            self.root.ids['repeat_pulse'].disabled = True
         else:
-            self.root.ids['pulse']. disabled = False
+            self.root.ids['pulse'].disabled = False
+            self.root.ids['repeat_pulse'].disabled = False
 
     def set_generator(self, mode, freq, n):
         if mode == 'Burst':
             self.generator.burst(int(n), float(freq))
+            if self.root.ids['checkbox_repeat_pulses'].active:
+                every = int(self.root.ids['spinner_repeat_pulses'].text[:-1])
+                self.repeat_event = Clock.schedule_interval(lambda dt: self.generator.burst(int(n), float(freq)), every)
         elif mode == 'Continuous':
             self.generator.continuous(float(freq))
 
     def stop_generator(self):
         self.generator.stop()
+        if self.repeat_event is not None:
+            self.repeat_event.cancel()
+            self.repeat_event = None
 
 
 app = WaveGenApp()

@@ -24,7 +24,7 @@ BoxLayout:
         Label:
             size_hint_x: None
             width: 150
-            text: 'Frequency'
+            text: 'Frequency (Hz)'
         Slider:
             id: slider_freq
             min: 0
@@ -52,17 +52,36 @@ BoxLayout:
         Slider:
             id: slider_pulses
             min: 0
-            max: 100
+            max: 10
             step: 1
             orientation: 'horizontal'
-            on_value: app.reflect_val('slider', input_pulses, slider_pulses, 0, 100, 0)
+            on_value: app.reflect_val('slider', input_pulses, slider_pulses, 0, 10, 0)
         TextInput:
             id: input_pulses
             size_hint_x: None
             multiline: False
             width: 150
             text: '0'
-            on_text_validate: app.reflect_val('input', input_pulses, slider_pulses, 0, 100, 0)
+            on_text_validate: app.reflect_val('input', input_pulses, slider_pulses, 0, 10, 0)
+    BoxLayout:
+        id: repeat_pulse
+        disabled: True
+        size_hint_y: None
+        spacing: 20
+        height: dp(50)
+        orientation: 'horizontal'
+        CheckBox:
+            id: checkbox_repeat_pulses
+            size_hint_x: None
+            width: 80
+        Label:
+            text: 'Repeat Pulses every'
+            size_hint_x: None
+            width: 150
+        Spinner:
+            id: spinner_repeat_pulses
+            values: '2s', '5s', '10s'
+            text: self.values[0]
     Label:
     BoxLayout:
         size_hint_y: None
