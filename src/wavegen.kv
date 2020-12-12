@@ -1,0 +1,89 @@
+BoxLayout:
+    orientation: 'vertical'
+    spacing: 10
+    padding: 20
+    BoxLayout:
+        id : mode
+        spacing: 20
+        size_hint_y: None
+        height: dp(80)
+        orientation: 'horizontal'
+        Label:
+            text: 'Mode'
+        Spinner:
+            id: spinner_mode
+            values: 'Continuous', 'Burst'
+            text: self.values[0]
+            on_text: app.set_mode(self.text == 'Burst')
+    BoxLayout:
+        id: freq
+        size_hint_y: None
+        spacing: 20
+        height: dp(50)
+        orientation: 'horizontal'
+        Label:
+            size_hint_x: None
+            width: 150
+            text: 'Frequency'
+        Slider:
+            id: slider_freq
+            min: 0
+            max: 4.3
+            orientation: 'horizontal'
+            on_value: app.reflect_val('slider', input_freq, slider_freq,0,4.3,3)
+        TextInput:
+            id: input_freq
+            size_hint_x: None
+            multiline: False
+            width: 150
+            text: '0.000'
+            on_text_validate: app.reflect_val('input', input_freq, slider_freq, 0, 4.3, 3)
+    BoxLayout:
+        id: pulse
+        disabled: True
+        size_hint_y: None
+        spacing: 20
+        height: dp(50)
+        orientation: 'horizontal'
+        Label:
+            size_hint_x: None
+            width: 150
+            text: 'Number of pulses'
+        Slider:
+            id: slider_pulses
+            min: 0
+            max: 100
+            step: 1
+            orientation: 'horizontal'
+            on_value: app.reflect_val('slider', input_pulses, slider_pulses, 0, 100, 0)
+        TextInput:
+            id: input_pulses
+            size_hint_x: None
+            multiline: False
+            width: 150
+            text: '0'
+            on_text_validate: app.reflect_val('input', input_pulses, slider_pulses, 0, 100, 0)
+    Label:
+    BoxLayout:
+        size_hint_y: None
+        height: 100
+        spacing: 20
+        Button:
+            text: 'Set'
+            on_release : app.set_generator(spinner_mode.text, input_freq.text, input_pulses.text)
+        Button:
+            background_color: (1,0,0)
+            text: 'Stop'
+            on_release: app.stop_generator()
+
+
+<MessagePopup@Popup>
+    title: 'Error'
+    on_dismiss: exit(1)
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: 'Impossible to connect'
+        Button:
+            text: 'Close'
+            on_release: root.dismiss();
