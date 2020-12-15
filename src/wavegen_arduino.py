@@ -1,4 +1,10 @@
-from serial import Serial, EIGHTBITS, PARITY_NONE, STOPBITS_ONE
+#!/usr/bin/python3
+"""
+
+
+
+"""
+from serial import Serial
 from serial.tools import list_ports
 import os
 
@@ -34,16 +40,17 @@ class WaveGenArduino:
         return arduino_list
 
     def connect(self):
-        self.__serial_connection = Serial(self._port)
+        self.__serial_connection = Serial(self._port, baudrate=115200)
         if self.__serial_connection.is_open:
             self.__d("Serial: Connected")
             return True
         return False
 
     def disconnect(self):
-        self.__serial_connection.close()
-        self.__serial_connection = None
-        self.__d("Serial: disconnected")
+        if self.__serial_connection is not None:
+            self.__serial_connection.close()
+            self.__serial_connection = None
+            self.__d("Serial: disconnected")
 
     def _send_command(self, cmd):
         bytes_cmd = bytes(cmd,'utf-8')
@@ -67,6 +74,7 @@ class WaveGenArduino:
 
     def query_state(self):
         self._send_command("?\n")
+
 
 if __name__ == "__main__":
     import argparse

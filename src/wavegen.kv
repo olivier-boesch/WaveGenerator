@@ -30,7 +30,7 @@ BoxLayout:
             min: 0
             max: 4.3
             orientation: 'horizontal'
-            on_value: app.reflect_val('slider', input_freq, slider_freq,0,4.3,3)
+            on_value: app.reflect_val('slider', input_freq, slider_freq,0,4.3,3); app.update_freq()
         TextInput:
             id: input_freq
             size_hint_x: None
@@ -94,15 +94,21 @@ BoxLayout:
             background_color: (1,0,0)
             text: 'Stop'
             on_release: app.stop_generator()
-
+    Label:
+        size_hint_y: None
+        height: dp(20)
+        font_size: sp(12)
+        text: "Wavegen v1.0 - olivier boesch © 2020 - Lycée saint Exupéry (Marseille)"
 
 <MessagePopup@Popup>
     title: 'Error'
-    on_dismiss: exit(1)
+    on_dismiss: app.stop()
+    size_hint: 0.7,0.7
     BoxLayout:
         orientation: 'vertical'
         Label:
             text: 'Impossible to connect'
         Button:
+            size_hint_y: 0.2
             text: 'Close'
             on_release: root.dismiss();
