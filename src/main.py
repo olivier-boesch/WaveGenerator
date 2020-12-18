@@ -8,7 +8,7 @@ Gui pour commande d'un arduino
 
 """
 
-__version__ = '1.0.1dev'
+__version__ = '1.0.1'
 
 # no console on output for windows
 from kivy.utils import platform
@@ -32,15 +32,21 @@ class WaveGenApp(App):
 
     def on_start(self):
         """what to do just before start ?"""
-        if not self.generator.connect():
-            d = Factory.MessagePopup()
-            d.open()
+        self.connect()
 
     def on_stop(self):
         """what to do just before stop ?"""
         if self.generator_started:
             self.generator.stop()
         self.generator.disconnect()
+
+    def connect(self):
+        ret = self.generator.connect()
+        if ret is None:
+            Clock.schedule_once(lambda dt: self.connect(), 0.5)
+        elif ret == False:
+            d = Factory.MessagePopup()
+            d.open()
 
     def set_repeat(self, active):
             self.root.ids['every_repeat'].disabled = not active
