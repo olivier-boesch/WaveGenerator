@@ -30,10 +30,10 @@ Ordinateur --USB--> arduino --banane vers BNC--> cuve à vagues
 
 Dépendances : kivy et pyserial (modules python)
 
-### Binaires (sans installation)
+### Binaires v1.0 (sans installation)
 
 <img src="https://github.com/olivier-boesch/WaveGenerator/raw/main/media/wavegen.png" width=500>
 
-binaire windows 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/raw/main/binairies/wavegen_win64.zip
+binaire windows 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/releases/download/v1.0/wavegen_win64.zip
 
-binaire linux 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/raw/main/binairies/wavegen_linux.zip
+binaire linux 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/releases/download/v1.0/wavegen_linux64.zip
