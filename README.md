@@ -41,6 +41,8 @@ binaire linux 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/re
 
 ### Binaires (developpement - sans installation)
 
+<img src="https://github.com/olivier-boesch/WaveGenerator/raw/main/media/wavegen_dev.png" width=500>
+
 Windows 64 ibts : https://github.com/olivier-boesch/WaveGenerator/raw/main/binaries/wavegen_win64.zip
 
 Linux 64 bits : https://github.com/olivier-boesch/WaveGenerator/raw/main/binaries/wavegen_linux64.zip
