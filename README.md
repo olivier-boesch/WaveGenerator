@@ -16,8 +16,8 @@ Ordinateur --USB--> arduino --banane vers BNC--> cuve à vagues
 ## Comment faire
 
 * Charger le code arduino dans l'arduino UNO.
-* Faire le branchement électrique
-* Relier l'arduino en USB à l'ordinateur (relier la borne noire à GND et la borne rouge au pin 10)
+* Faire le branchement électrique (relier la borne noire à GND et la borne rouge au pin 10)
+* Relier l'arduino en USB à l'ordinateur
 * Relier l'arduino à la commande du moteur avec un câble Banane-BNC
 * Démarrer wavegen.exe (sous windows) ou wavegen (sous linux)
 
