@@ -1,3 +1,7 @@
+# Commande de cuve à vagues NOVA Physics
+# Gui pour commande d'un arduino
+# fichier de définition d'UI
+
 BoxLayout:
     orientation: 'vertical'
     spacing: 10
@@ -30,14 +34,15 @@ BoxLayout:
             min: 0
             max: 4.3
             orientation: 'horizontal'
-            on_value: app.reflect_val('slider', input_freq, slider_freq,0,4.3,3); app.update_freq()
+            on_value: app.reflect_val('slider', input_freq, slider_freq,0,4.3,3)
+            on_touch_up: if args[1].grab_current == self: app.update_freq()
         TextInput:
             id: input_freq
             size_hint_x: None
             multiline: False
             width: 150
             text: '0.000'
-            on_text_validate: app.reflect_val('input', input_freq, slider_freq, 0, 4.3, 3)
+            on_text_validate: app.reflect_val('input', input_freq, slider_freq, 0, 4.3, 3); app.update_freq()
     BoxLayout:
         id: pulse
         disabled: True
@@ -100,6 +105,9 @@ BoxLayout:
         font_size: sp(12)
         text: "Wavegen v1.0 - olivier boesch © 2020 - Lycée saint Exupéry (Marseille)"
 
+
+
+# Popup shown when connection is impossible
 <MessagePopup@Popup>
     title: 'Error'
     on_dismiss: app.stop()
