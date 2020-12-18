@@ -6,9 +6,14 @@ Gui pour commande d'un arduino
 
 Fichier librarie pour commande l'arduino
 """
-from serial import Serial
-from serial.tools import list_ports
-import os
+
+from kivy.utils import platform
+if platform in ['win', 'linux']:
+    from serial import Serial
+    from serial.tools import list_ports
+elif platform == 'android':
+    from usb4a import usb
+    from usbserial4a import serial4a
 
 
 class WaveGenArduino:
@@ -34,24 +39,43 @@ class WaveGenArduino:
 
     def list_arduino_ports(self):
         """list serial ports where an arduino is connected"""
-        if os.name == 'posix':
-            prefix = '/dev/'
-        else:
-            prefix = ''
+        prefix = ''
         arduino_list = []
-        l = list_ports.comports()
-        for item in l:
-            if item.vid == 9025:  # 9025 is the vid of 'Arduino LLC'
-                arduino_list.append(prefix+item.name)
+        if platform == 'android':
+            usb_device_list = usb.get_usb_device_list()
+            for device in usb_device_list:
+                if device.getVendorId() == 9025:  # 9025 is the vid of 'Arduino LLC'
+                    arduino_list.append(device.getDeviceName())
+                    self.android_device = device
+        if platform == 'linux':
+            prefix = '/dev/'
+        if platform in ['win','linux']:
+            l = list_ports.comports()
+            for item in l:
+                if item.vid == 9025:  # 9025 is the vid of 'Arduino LLC'
+                    arduino_list.append(prefix+item.name)
         self.__d("Serial: available ports "+str(arduino_list))
         return arduino_list
 
     def connect(self):
         """Connect to the Arduino"""
-        self.__serial_connection = Serial(self._port, baudrate=115200)
-        if self.__serial_connection.is_open:
-            self.__d("Serial: Connected")
-            return True
+        if self._port is None:
+            return False
+        if platform == 'android':
+            if not usb.has_usb_permission(self.android_device):
+                usb.request_usb_permission(self.android_device)
+                return None
+            self.__serial_connection = serial4a.get_serial_port( self._port, 115200, 8, 'N', 1)
+            if self.__serial_connection and self.__serial_connection.is_open:
+                self.__d("Serial: Connected")
+                return True
+        else:
+            self.__serial_connection = Serial(self._port, baudrate=115200)
+            if self.__serial_connection.is_open:
+                self.__d("Serial: Connected")
+                return True
+        self.__serial_connection = None
+        self._port = None
         return False
 
     def disconnect(self):
@@ -64,8 +88,9 @@ class WaveGenArduino:
     def _send_command(self, cmd):
         """Send command over serial connection"""
         bytes_cmd = bytes(cmd,'utf-8')
-        self.__serial_connection.write(bytes_cmd)
-        self.__d("Serial: Sent command {:s}".format(repr(bytes_cmd)))
+        if self.__serial_connection is not None:
+            self.__serial_connection.write(bytes_cmd)
+            self.__d("Serial: Sent command {:s}".format(repr(bytes_cmd)))
 
     def _freq_to_motor_freq(self, freq):
         """Convert frequencies (and number of burst) in the real ones"""
