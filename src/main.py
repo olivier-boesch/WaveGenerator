@@ -40,6 +40,10 @@ class WaveGenApp(App):
             self.generator.stop()
         self.generator.disconnect()
 
+    def set_repeat(self, active):
+            self.root.ids['every_repeat'].disabled = not active
+            self.root.ids['spinner_repeat_pulses'].disabled = not active
+
     @staticmethod
     def format_text(val, dec):
         """how to format displyed text in textinput"""
@@ -71,6 +75,7 @@ class WaveGenApp(App):
         else:  # Burst mode
             self.root.ids['pulse'].disabled = False
             self.root.ids['repeat_pulse'].disabled = False
+            self.set_repeat(self.root.ids['checkbox_repeat_pulses'].active)
 
     def update_freq(self):
         """update freq live when running in continuous mode"""

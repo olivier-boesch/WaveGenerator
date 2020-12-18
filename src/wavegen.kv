@@ -4,11 +4,11 @@
 
 BoxLayout:
     orientation: 'vertical'
-    spacing: 10
-    padding: 20
+    spacing: dp(10)
+    padding: dp(20)
     BoxLayout:
         id : mode
-        spacing: 20
+        spacing: dp(20)
         size_hint_y: None
         height: dp(80)
         orientation: 'horizontal'
@@ -22,12 +22,12 @@ BoxLayout:
     BoxLayout:
         id: freq
         size_hint_y: None
-        spacing: 20
+        spacing: dp(20)
         height: dp(50)
         orientation: 'horizontal'
         Label:
             size_hint_x: None
-            width: 150
+            width: dp(150)
             text: 'Frequency (Hz)'
         Slider:
             id: slider_freq
@@ -40,19 +40,19 @@ BoxLayout:
             id: input_freq
             size_hint_x: None
             multiline: False
-            width: 150
+            width: dp(150)
             text: '0.000'
             on_text_validate: app.reflect_val('input', input_freq, slider_freq, 0, 4.3, 3); app.update_freq()
     BoxLayout:
         id: pulse
         disabled: True
         size_hint_y: None
-        spacing: 20
+        spacing: dp(20)
         height: dp(50)
         orientation: 'horizontal'
         Label:
             size_hint_x: None
-            width: 150
+            width: dp(150)
             text: 'Number of pulses'
         Slider:
             id: slider_pulses
@@ -65,33 +65,39 @@ BoxLayout:
             id: input_pulses
             size_hint_x: None
             multiline: False
-            width: 150
+            width: dp(150)
             text: '0'
             on_text_validate: app.reflect_val('input', input_pulses, slider_pulses, 0, 10, 0)
     BoxLayout:
         id: repeat_pulse
         disabled: True
         size_hint_y: None
-        spacing: 20
+        spacing: dp(20)
         height: dp(50)
         orientation: 'horizontal'
-        CheckBox:
+        Label:
+            text: 'Repeat Pulses'
+            size_hint_x: None
+            width: dp(100)
+        Switch:
             id: checkbox_repeat_pulses
             size_hint_x: None
-            width: 80
+            width: dp(50)
+            on_active: app.set_repeat(self.active)
         Label:
-            text: 'Repeat Pulses every'
+            id: every_repeat
+            text: 'every'
             size_hint_x: None
-            width: 150
+            width: dp(80)
         Spinner:
             id: spinner_repeat_pulses
             values: '2s', '5s', '10s'
             text: self.values[0]
-    Label:
+    Label:  # placeholder only
     BoxLayout:
         size_hint_y: None
-        height: 100
-        spacing: 20
+        height: dp(100)
+        spacing: dp(20)
         Button:
             text: 'Set'
             on_release : app.set_generator(spinner_mode.text, input_freq.text, input_pulses.text)
