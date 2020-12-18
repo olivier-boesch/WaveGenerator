@@ -46,3 +46,5 @@ binaire linux 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/re
 Windows 64 ibts : https://github.com/olivier-boesch/WaveGenerator/raw/main/binaries/wavegen_win64.zip
 
 Linux 64 bits : https://github.com/olivier-boesch/WaveGenerator/raw/main/binaries/wavegen_linux64.zip
+
+Android arm64 : https://github.com/olivier-boesch/WaveGenerator/raw/main/binaries/wavegen-1.0.1-arm64-v8a-debug.apk
