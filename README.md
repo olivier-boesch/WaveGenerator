@@ -37,3 +37,10 @@ Dépendances : kivy et pyserial (modules python)
 binaire windows 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/releases/download/v1.0/wavegen_win64.zip
 
 binaire linux 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/releases/download/v1.0/wavegen_linux64.zip
+
+
+### Binaires (developpement - sans installation)
+
+Windows 64 ibts : https://github.com/olivier-boesch/WaveGenerator/raw/main/binaries/wavegen_win64.zip
+
+Linux 64 bits : https://github.com/olivier-boesch/WaveGenerator/raw/main/binaries/wavegen_linux64.zip
