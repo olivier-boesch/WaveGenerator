@@ -11,8 +11,6 @@ BoxLayout:
     BoxLayout:
         id : mode
         spacing: dp(20)
-        size_hint_y: None
-        height: dp(80)
         orientation: 'horizontal'
         Label:
             text: 'Mode'
@@ -23,9 +21,7 @@ BoxLayout:
             on_text: app.set_mode(self.text == 'Burst')
     BoxLayout:
         id: freq
-        size_hint_y: None
         spacing: dp(20)
-        height: dp(50)
         orientation: 'horizontal'
         Label:
             size_hint_x: None
@@ -40,6 +36,8 @@ BoxLayout:
             on_touch_up: if args[1].grab_current == self: app.update_freq()
         TextInput:
             id: input_freq
+            size_hint_y: None
+            height: dp(50)
             size_hint_x: None
             multiline: False
             width: dp(150)
@@ -48,9 +46,7 @@ BoxLayout:
     BoxLayout:
         id: pulse
         disabled: True
-        size_hint_y: None
         spacing: dp(20)
-        height: dp(50)
         orientation: 'horizontal'
         Label:
             size_hint_x: None
@@ -65,6 +61,8 @@ BoxLayout:
             on_value: app.reflect_val('slider', input_pulses, slider_pulses, 0, 10, 0)
         TextInput:
             id: input_pulses
+            size_hint_y: None
+            height: dp(50)
             size_hint_x: None
             multiline: False
             width: dp(150)
@@ -73,9 +71,7 @@ BoxLayout:
     BoxLayout:
         id: repeat_pulse
         disabled: True
-        size_hint_y: None
         spacing: dp(20)
-        height: dp(50)
         orientation: 'horizontal'
         Label:
             text: 'Repeat Pulses'
@@ -95,10 +91,8 @@ BoxLayout:
             id: spinner_repeat_pulses
             values: '2s', '5s', '10s'
             text: self.values[0]
-    Label:  # placeholder only
+    # Label:  # placeholder only
     BoxLayout:
-        size_hint_y: None
-        height: dp(100)
         spacing: dp(20)
         Button:
             text: 'Set'
