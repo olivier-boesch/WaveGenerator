@@ -8,6 +8,8 @@ Gui pour commande d'un arduino
 
 """
 
+__version__ = '1.0.1dev'
+
 # no console on output for windows
 from kivy.utils import platform
 if platform == 'win':
@@ -115,7 +117,7 @@ class WaveGenApp(App):
             self.repeat_event.cancel()
             self.repeat_event = None
 
-
-# create and start app
-app = WaveGenApp()
-app.run()
+if __name__ == "__main__":
+    # create and start app
+    app = WaveGenApp()
+    app.run()

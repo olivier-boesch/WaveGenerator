@@ -2,6 +2,8 @@
 # Gui pour commande d'un arduino
 # fichier de définition d'UI
 
+#:import __version__ main.__version__
+
 BoxLayout:
     orientation: 'vertical'
     spacing: dp(10)
@@ -109,7 +111,7 @@ BoxLayout:
         size_hint_y: None
         height: dp(20)
         font_size: sp(12)
-        text: "Wavegen v1.0 - olivier boesch © 2020 - Lycée saint Exupéry (Marseille)"
+        text: "Wavegen v" + __version__ + " - olivier boesch © 2020 - Lycée saint Exupéry (Marseille)"
 
 
 
