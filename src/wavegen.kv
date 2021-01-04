@@ -30,9 +30,9 @@ BoxLayout:
         Slider:
             id: slider_freq
             min: 0
-            max: 4.3
+            max: 5
             orientation: 'horizontal'
-            on_value: app.reflect_val('slider', input_freq, slider_freq,0,4.3,3)
+            on_value: app.reflect_val('slider', input_freq, slider_freq,0,5,3)
             on_touch_up: if args[1].grab_current == self: app.update_freq()
         TextInput:
             id: input_freq

@@ -18,7 +18,7 @@ elif platform == 'android':
 
 class WaveGenArduino:
     """Class to handle arduino as a square signal generator"""
-    pulse_freq_conversion_factor = 3200  # conversion factor from rotationnal freq to excitation freq
+    pulse_freq_conversion_factor = 3200  # conversion factor from rotational freq to excitation freq
     __serial_connection = None
 
     def __init__(self, port=None, debug_func=None):

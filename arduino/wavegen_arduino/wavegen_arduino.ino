@@ -15,7 +15,7 @@ Square Waveform Generator asynchronous
 //don't wait serial forever
 #define SERIAL_TIMEOUT 10 //ms
 //don't output more than this frequency
-#define MAX_FREQ 14000 //Hz
+#define MAX_FREQ 16000 //Hz
 //each command ends with this
 #define TERMINATOR '\n'
 
