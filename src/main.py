@@ -8,7 +8,7 @@ Gui pour commande d'un arduino
 
 """
 
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 
 # no console on output for windows
 from kivy.utils import platform
