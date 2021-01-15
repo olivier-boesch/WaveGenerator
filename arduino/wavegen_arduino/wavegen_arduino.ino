@@ -35,7 +35,7 @@ private:
   bool _state; //current state true->HIGH
   byte _mode; //0: stop, 1: continuous, 2: pulse
   unsigned long _semi_period; //µs
-  unsigned long _n_pulses; //number
+  long _n_pulses; //number
   unsigned long _time_change; //µs
   void _toggle_output();
   bool _is_output_low();
@@ -103,6 +103,10 @@ void Pulse::update(){
     this->_time_change = micros() + this->_semi_period;
     //are we in burst mode ?
     if((this->_mode == 2) && (this->_is_output_low())){
+      #ifdef DEBUG
+      Serial.print("pulses: ");
+      Serial.println(this->_n_pulses);
+      #endif
       //one pulse has been done
       this->_n_pulses -= 1;
       //if no more pulse -> stop
