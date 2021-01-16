@@ -55,7 +55,7 @@ void Pulse::start_continuous(unsigned long freq){
   //change only if frequency is valid
   if((freq <= MAX_FREQ) && (freq > 0)){
     this->_mode = 1; 
-    this->_semi_period = (unsigned long) (1000000.0 / (2*freq)); // half period
+    this->_semi_period = (unsigned long) (1000000.0 / (2*freq)); // half period in µs
     this->_time_change = micros() + this->_semi_period; //when the next change should occur ?
 #ifdef DEBUG
     Serial.print("Cont. f=");
