@@ -39,7 +39,6 @@ class WaveGenArduino:
 
     def list_arduino_ports(self):
         """list serial ports where an arduino is connected"""
-        prefix = ''
         arduino_list = []
         if platform == 'android':
             usb_device_list = usb.get_usb_device_list()
@@ -47,13 +46,11 @@ class WaveGenArduino:
                 if device.getVendorId() == 9025:  # 9025 is the vid of 'Arduino LLC'
                     arduino_list.append(device.getDeviceName())
                     self.android_device = device
-        if platform == 'linux':
-            prefix = '/dev/'
         if platform in ['win','linux']:
             l = list_ports.comports()
             for item in l:
                 if item.vid == 9025:  # 9025 is the vid of 'Arduino LLC'
-                    arduino_list.append(prefix+item.name)
+                    arduino_list.append(item.device)
         self.__d("Serial: available ports "+str(arduino_list))
         return arduino_list
 
