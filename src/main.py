@@ -5,10 +5,9 @@ Commande de cuve à vagues NOVA Physics
 
 Gui pour commande d'un arduino
 
-
 """
 
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 
 # no console on output for windows
 from kivy.utils import platform
@@ -122,6 +121,7 @@ class WaveGenApp(App):
         if self.repeat_event is not None:
             self.repeat_event.cancel()
             self.repeat_event = None
+
 
 if __name__ == "__main__":
     # create and start app
