@@ -2,6 +2,8 @@
 
 Générer une commande par logiciel pour la cuve à vagues NOVA Physics.
 
+Article présentant le montage : https://www.pedagogie.ac-aix-marseille.fr/jcms/c_10865222/fr/generateur-de-vagues-commande-par-une-tablette-d-une-cuve-a-vagues-nova-physics
+
 l'arduino se comporte comme un générateur de signal carré de fréquence variable. Trois commandes sont possibles :
 * S\n : arrête le générateur
 * C3600\n : génère en continu à 3600Hz
@@ -30,15 +32,15 @@ Ordinateur --USB--> arduino --banane vers BNC--> cuve à vagues
 
 Dépendances : kivy et pyserial (modules python)
 
-### Binaires v1.0.3 (sans installation)
+### Binaires v1.0.4 (sans installation)
 
 <img src="https://github.com/olivier-boesch/WaveGenerator/raw/main/media/wavegen_dev.png" width=500>
 
-binaire windows 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/releases/download/v1.0.3/wavegen_win64.zip
+binaire windows 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/releases/download/1.0.4/wavegen_win64.zip
 
-binaire linux 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/releases/download/v1.0.3/wavegen_linux64.zip
+binaire linux 64 bits (zip) : https://github.com/olivier-boesch/WaveGenerator/releases/download/1.0.4/wavegen_linux64.zip
 
-binaire Android Arm64 (apk) : https://github.com/olivier-boesch/WaveGenerator/releases/download/v1.0.3/wavegen-1.0.1-arm64-v8a-debug.apk
+binaire Android Arm64 (apk) : https://github.com/olivier-boesch/WaveGenerator/releases/download/1.0.4/wavegen-1.0.1-arm64-v8a-debug.apk
 
 
 ### Binaires (developpement - sans installation)
