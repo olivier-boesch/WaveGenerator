@@ -79,20 +79,20 @@ FootHole        = 3.2;
 //Coque haut - Top shell
 TShell          = 1;// [0:No, 1:Yes]
 //Coque bas- Bottom shell
-BShell          = 0;// [0:No, 1:Yes]
+BShell          = 1;// [0:No, 1:Yes]
 //Panneau avant - Front panel
-FPanL           = 0;// [0:No, 1:Yes]
+FPanL           = 1;// [0:No, 1:Yes]
 //Panneau arrière - Back panel  
-BPanL           = 0;// [0:No, 1:Yes]
+BPanL           = 1;// [0:No, 1:Yes]
 // Pieds PCB - PCB feet (x4) 
-  PCBFeet       = 0;// [0:No, 1:Yes]
+  PCBFeet       = 1;// [0:No, 1:Yes]
 
   
 /* [Hidden] */
 // - Couleur coque - Shell color  
 Couleur1        = "grey";       
 // - Couleur panneaux - Panels color    
-Couleur2        = "Red";    
+Couleur2        = "Yellow";    
 // Thick X 2 - making decorations thicker if it is a vent to make sure they go through shell
 Dec_Thick       = Vent ? Thick*2 : Thick; 
 // - Depth decoration

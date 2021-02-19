@@ -54,11 +54,11 @@ BoxLayout:
             text: 'Number of pulses'
         Slider:
             id: slider_pulses
-            min: 0
+            min: 1
             max: 10
             step: 1
             orientation: 'horizontal'
-            on_value: app.reflect_val('slider', input_pulses, slider_pulses, 0, 10, 0)
+            on_value: app.reflect_val('slider', input_pulses, slider_pulses, 1, 10, 0)
         TextInput:
             id: input_pulses
             size_hint_y: None
@@ -66,8 +66,8 @@ BoxLayout:
             size_hint_x: None
             multiline: False
             width: dp(150)
-            text: '0'
-            on_text_validate: app.reflect_val('input', input_pulses, slider_pulses, 0, 10, 0)
+            text: '1'
+            on_text_validate: app.reflect_val('input', input_pulses, slider_pulses, 1, 10, 0)
     BoxLayout:
         id: repeat_pulse
         disabled: True

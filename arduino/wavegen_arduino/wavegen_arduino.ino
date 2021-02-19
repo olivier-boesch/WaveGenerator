@@ -1,11 +1,11 @@
 /*
 Square Waveform Generator asynchronous
- 
+
  Olivier Boesch (c) 2020
- */
+*/
 
 #define SERIAL_BAUDRATE 115200
-//should we deug ?
+//should we debug ?
 //#define DEBUG
 //port to ouput on by direct manipulation
 #define PORT_OUT PORTB //PORTB for pins 8 to 13, PORTD for pins 0 to 7
@@ -20,7 +20,7 @@ Square Waveform Generator asynchronous
 #define TERMINATOR '\n'
 
 
-//generator class for asynchronous square signal generation
+//class for asynchronous square signal generation
 class Pulse
 {
 public:
@@ -34,9 +34,9 @@ private:
   byte _pin_mask; //where is the output pin ?
   bool _state; //current state true->HIGH
   byte _mode; //0: stop, 1: continuous, 2: pulse
-  unsigned long _semi_period; //µs
+  unsigned long _semi_period; //µs - half period of signal
   long _n_pulses; //number
-  unsigned long _time_change; //µs
+  unsigned long _time_change; //µs - next time to change
   void _toggle_output();
   bool _is_output_low();
 };
@@ -54,7 +54,7 @@ byte Pulse::get_mode(){
 void Pulse::start_continuous(unsigned long freq){
   //change only if frequency is valid
   if((freq <= MAX_FREQ) && (freq > 0)){
-    this->_mode = 1; 
+    this->_mode = 1;
     this->_semi_period = (unsigned long) (1000000.0 / (2*freq)); // half period in µs
     this->_time_change = micros() + this->_semi_period; //when the next change should occur ?
 #ifdef DEBUG
@@ -71,7 +71,7 @@ void Pulse::start_burst(unsigned long n, unsigned long freq){
   //change only if frequency is valid
   if((freq <= MAX_FREQ) && (freq > 0) && (n > 0)){
     this->_n_pulses = n;
-    this->_mode = 2; 
+    this->_mode = 2;
     this->_semi_period = (unsigned long) (1000000.0 / (2*freq)); //half period
     this->_time_change = micros() + this->_semi_period; //when the next change should occur ?
 #ifdef DEBUG
@@ -97,23 +97,23 @@ void Pulse::stop(){
 
 void Pulse::update(){
   //is it time to change the output state ?
-  if((this->_mode != 0) && (this->_time_change < micros())){
+  if((this->_time_change <= micros()) && (this->_mode != 0)){
     this->_toggle_output();
     //set the next time to change
     this->_time_change = micros() + this->_semi_period;
     //are we in burst mode ?
-    if((this->_mode == 2) && (this->_is_output_low())){
+    if((this->_is_output_low()) && (this->_mode == 2)){
       #ifdef DEBUG
       Serial.print("pulses: ");
       Serial.println(this->_n_pulses);
       #endif
       //one pulse has been done
-      this->_n_pulses -= 1;
+      this->_n_pulses --;
       //if no more pulse -> stop
       if(this->_n_pulses < 0)
         this->stop();
     }
-  }  
+  }
 }
 
 void Pulse::_toggle_output(){
@@ -128,7 +128,17 @@ bool Pulse::_is_output_low(){
 
 Pulse * pulse_gen;
 
-void update_config(){
+void setup(){
+  pulse_gen = new Pulse(PIN_OUT);
+  Serial.begin(SERIAL_BAUDRATE); //start serial
+  Serial.setTimeout(SERIAL_TIMEOUT);
+#ifdef DEBUG
+  while(!Serial);
+  Serial.println("Starting...");
+#endif
+}
+
+void loop(){
   //is there a command ready to be received?
   if(Serial.available()){
     String buffer;
@@ -137,9 +147,9 @@ void update_config(){
     int comma;
     String sfreq;
     buffer = Serial.readStringUntil(TERMINATOR);
-#ifdef DEBUG
+    #ifdef DEBUG
     Serial.println(buffer);
-#endif
+    #endif
     if(buffer.length() > 0){
       switch(buffer[0]){
       case 'S': //Stop
@@ -160,20 +170,6 @@ void update_config(){
       }
     }
   }
-}
-
-void setup(){
-  pulse_gen = new Pulse(PIN_OUT);
-  Serial.begin(SERIAL_BAUDRATE); //start serial
-  Serial.setTimeout(SERIAL_TIMEOUT);
-#ifdef DEBUG
-  while(!Serial);
-  Serial.println("Starting...");
-#endif
-}
-
-void loop(){
-  update_config();
   pulse_gen->update();
 }
 

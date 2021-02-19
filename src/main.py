@@ -7,13 +7,13 @@ Gui pour commande d'un arduino
 
 """
 
-__version__ = '1.0.4'
+__version__ = '1.0.5'
 
 # no console on output for windows
 from kivy.utils import platform
 if platform == 'win':
     import os
-    os.environ['KIVY_NO_CONSOLELOG'] = '0'
+    os.environ['KIVY_NO_CONSOLELOG'] = '1'
 
 from kivy.app import App
 from kivy.logger import Logger
