@@ -7,25 +7,26 @@ Gui pour commande d'un arduino
 
 """
 
-__version__ = '1.0.5'
+__version__ = '1.1.0'
 
 # no console on output for windows
-from kivy.utils import platform
-if platform == 'win':
-    import os
+import os
+if os.name == 'nt':
     os.environ['KIVY_NO_CONSOLELOG'] = '1'
 
+from kivy.utils import platform
 from kivy.app import App
 from kivy.logger import Logger
 from kivy.factory import Factory
 from kivy.clock import Clock
-import wavegen_arduino
+import wavegen_mcu
 
 
 class WaveGenApp(App):
     """Main app class"""
     title = 'Waveform Generator'
-    generator = wavegen_arduino.WaveGenArduino(None,Logger.info)
+    icon = 'icon.png'
+    generator = wavegen_mcu.WaveGenSerial(None, Logger.info)
     repeat_event = None
     generator_started = False
 

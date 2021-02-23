@@ -1,23 +1,27 @@
 /*
-Square Waveform Generator asynchronous
+Square Waveform Generator asynchronous using tone
 
  Olivier Boesch (c) 2020
 */
 
+#if defined(ARDUINO_SAMD_ZERO) && defined(SERIAL_PORT_USBVIRTUAL)
+  // Required for Serial on Zero based boards
+  #define Serial SERIAL_PORT_USBVIRTUAL
+#endif
+
 #define SERIAL_BAUDRATE 115200
 //should we debug ?
 //#define DEBUG
-//port to ouput on by direct manipulation
-#define PORT_OUT PORTB //PORTB for pins 8 to 13, PORTD for pins 0 to 7
-#define PIN_FIRST 8 //8 for PORTB and 0 for PORTD
-// output pin
-#define PIN_OUT 10 //8<->13 only on port B
 //don't wait serial forever
 #define SERIAL_TIMEOUT 10 //ms
 //don't output more than this frequency
 #define MAX_FREQ 16000 //Hz
+//don't output less than this frequency
+#define MIN_FREQ 31 //Hz
 //each command ends with this
 #define TERMINATOR '\n'
+//Pin
+#define GENERATOR_PIN 10
 
 
 //class for asynchronous square signal generation
@@ -31,20 +35,17 @@ public:
   void update();
   byte get_mode();
 private:
-  byte _pin_mask; //where is the output pin ?
+  byte _pin; //where is the output pin ?
   bool _state; //current state true->HIGH
   byte _mode; //0: stop, 1: continuous, 2: pulse
-  unsigned long _semi_period; //µs - half period of signal
-  long _n_pulses; //number
-  unsigned long _time_change; //µs - next time to change
-  void _toggle_output();
-  bool _is_output_low();
+  unsigned long _time_end; //µs - time to stop burst
 };
 
 Pulse::Pulse(int pin){
-  this->_pin_mask = 1 << (pin-PIN_FIRST);
+  this->_pin = pin;
   pinMode(pin, OUTPUT);
   this->stop();
+  this->_time_end = 0;
 }
 
 byte Pulse::get_mode(){
@@ -53,83 +54,53 @@ byte Pulse::get_mode(){
 
 void Pulse::start_continuous(unsigned long freq){
   //change only if frequency is valid
-  if((freq <= MAX_FREQ) && (freq > 0)){
+  if((freq <= MAX_FREQ) && (freq >= MIN_FREQ)){
     this->_mode = 1;
-    this->_semi_period = (unsigned long) (1000000.0 / (2*freq)); // half period in µs
-    this->_time_change = micros() + this->_semi_period; //when the next change should occur ?
+    tone(this->_pin, freq);
 #ifdef DEBUG
-    Serial.print("Cont. f=");
+    Serial.print("Continuous f=");
     Serial.print(freq);
-    Serial.print("Hz; T=");
-    Serial.print(this->_semi_period);
-    Serial.println(" micro sec");
+    Serial.println("Hz");
 #endif
   }
 }
 
 void Pulse::start_burst(unsigned long n, unsigned long freq){
   //change only if frequency is valid
-  if((freq <= MAX_FREQ) && (freq > 0) && (n > 0)){
-    this->_n_pulses = n;
+  if((freq <= MAX_FREQ) && (freq >= MIN_FREQ) && (n > 0)){
     this->_mode = 2;
-    this->_semi_period = (unsigned long) (1000000.0 / (2*freq)); //half period
-    this->_time_change = micros() + this->_semi_period; //when the next change should occur ?
+    this->_time_end = micros() + (unsigned long)((double)n/(double)freq*1000000.0); //when should we stop the burst ?
+    tone(this->_pin, freq);
 #ifdef DEBUG
     Serial.print("Burst of ");
     Serial.print(n);
     Serial.print(" Pulses; f=");
     Serial.print(freq);
-    Serial.print("Hz; T=");
-    Serial.print(this->_semi_period);
-    Serial.println(" micro sec");
+    Serial.println("Hz");
 #endif
   }
 }
 
 void Pulse::stop(){
-  this->_time_change = 0; //don't change anymore on next update
-  PORT_OUT = PORT_OUT & ~this->_pin_mask; //put on low state
+  this->_time_end = 0;
   this->_mode = 0;
+  noTone(this->_pin);
 #ifdef DEBUG
   Serial.println("Stop");
 #endif
 }
 
 void Pulse::update(){
-  //is it time to change the output state ?
-  if((this->_time_change <= micros()) && (this->_mode != 0)){
-    this->_toggle_output();
-    //set the next time to change
-    this->_time_change = micros() + this->_semi_period;
-    //are we in burst mode ?
-    if((this->_is_output_low()) && (this->_mode == 2)){
-      #ifdef DEBUG
-      Serial.print("pulses: ");
-      Serial.println(this->_n_pulses);
-      #endif
-      //one pulse has been done
-      this->_n_pulses --;
-      //if no more pulse -> stop
-      if(this->_n_pulses < 0)
-        this->stop();
-    }
+  //is it time to end the burst ?
+  if((this->_mode == 2) && (this->_time_end <= micros())){
+    this->stop();
   }
-}
-
-void Pulse::_toggle_output(){
-  //reverse output
-  PORT_OUT ^= this->_pin_mask;
-}
-
-bool Pulse::_is_output_low(){
-  //are we in a low state ?
-  return (bool) !(PORT_OUT  & this->_pin_mask);
 }
 
 Pulse * pulse_gen;
 
 void setup(){
-  pulse_gen = new Pulse(PIN_OUT);
+  pulse_gen = new Pulse(GENERATOR_PIN);
   Serial.begin(SERIAL_BAUDRATE); //start serial
   Serial.setTimeout(SERIAL_TIMEOUT);
 #ifdef DEBUG
@@ -172,5 +143,3 @@ void loop(){
   }
   pulse_gen->update();
 }
-
-
