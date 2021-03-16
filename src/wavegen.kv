@@ -110,17 +110,40 @@ BoxLayout:
         font_size: sp(12)
         text: "Wavegen v" + __version__ + " - olivier boesch © 2020 - Lycée saint Exupéry (Marseille)"
 
+<WrappingLabel@Label>
+    text_size: self.size
+    halign: 'center'
+    valign: 'middle'
 
+# Popup shown when connection is impossible at startup
+<NoBoxPopup@Popup>
+    title: 'Error'
+    on_dismiss: app.stop()
+    size_hint: 0.7,0.7
+    BoxLayout:
+        padding: '10dp'
+        orientation: 'vertical'
+        Image:
+            source: 'disconnected.png'
+        WrappingLabel:
+            text: 'Leaving Now...\nPlease connect the Control Box to this device and restart the application'
+        Button:
+            size_hint_y: 0.2
+            text: 'Close'
+            on_release: root.dismiss();
 
-# Popup shown when connection is impossible
-<MessagePopup@Popup>
+# Popup shown when disconnection occurs
+<DisconnectBoxPopup@Popup>
     title: 'Error'
     on_dismiss: app.stop()
     size_hint: 0.7,0.7
     BoxLayout:
         orientation: 'vertical'
-        Label:
-            text: 'Please connect the microcontroller to this device'
+        padding: '10dp'
+        Image:
+            source: 'disconnected.png'
+        WrappingLabel:
+            text: 'Leaving now...\nThe control box was disconnected. Please reconnect and restart the application'
         Button:
             size_hint_y: 0.2
             text: 'Close'

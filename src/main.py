@@ -41,12 +41,17 @@ class WaveGenApp(App):
         self.generator.disconnect()
 
     def connect(self):
+        """ask the generator to connect to the arduino"""
         ret = self.generator.connect()
         if ret is None:
             Clock.schedule_once(lambda dt: self.connect(), 0.5)
         elif ret == False:
-            d = Factory.MessagePopup()
+            d = Factory.NoBoxPopup()
             d.open()
+
+    def disconnection_occurs(self):
+        p = Factory.DisconnectBoxPopup()
+        p.open()
 
     def set_repeat(self, active):
             self.root.ids['every_repeat'].disabled = not active
@@ -54,7 +59,7 @@ class WaveGenApp(App):
 
     @staticmethod
     def format_text(val, dec):
-        """how to format displyed text in textinput"""
+        """how to format displayed text in textinput"""
         fstr = "{:." + str(dec) + "f}"
         return fstr.format(val)
 
@@ -92,7 +97,8 @@ class WaveGenApp(App):
             freq = "{:.3f}".format(self.root.ids['slider_freq'].value)
             mode = self.root.ids['spinner_mode'].text
             if mode == 'Continuous':
-                self.set_generator(mode, freq, 0)
+                if self.set_generator(mode, freq, 0) is not None:
+                    self.disconnection_occurs()
 
     def set_generator(self, mode, freq, n):
         """start generator with right mode and characteristics"""
@@ -100,25 +106,33 @@ class WaveGenApp(App):
             self.stop_generator()
         if mode == 'Burst':
             Logger.info("Op: Start Generator (Burst of {:s} pulses at {:s} Hz".format(n, freq))
-            self.generator.burst(int(n), float(freq))
+            if self.generator.burst(int(n), float(freq)) is not None:
+                self.disconnection_occurs()
             if self.root.ids['checkbox_repeat_pulses'].active:
                 every = int(self.root.ids['spinner_repeat_pulses'].text[:-1])
                 Logger.info("Op: Sheduling repeat bursts every {:d} s".format(every))
                 if self.repeat_event is not None:
                     self.repeat_event.cancel()
                     self.repeat_event = None
-                self.repeat_event = Clock.schedule_interval(lambda dt: self.generator.burst(int(n), float(freq)), every)
+                self.repeat_event = Clock.schedule_interval(lambda dt: self.launch_burst(int(n), float(freq)), every)
             self.generator_started = True
         elif mode == 'Continuous':
             Logger.info("Op: Start Generator (continuous at {:s} Hz".format(freq))
-            self.generator.continuous(float(freq))
+            if self.generator.continuous(float(freq)) is not None:
+                self.disconnection_occurs()
             self.generator_started = True
+
+    def launch_burst(self, n, freq):
+        if self.generator.burst(int(n), float(freq)) is not None:
+            self.disconnection_occurs()
+
 
     def stop_generator(self):
         """stop generator"""
         Logger.info("Op: Stop Generator")
         self.generator_started = False
-        self.generator.stop()
+        if self.generator.stop() is not None:
+            self.disconnection_occurs()
         if self.repeat_event is not None:
             self.repeat_event.cancel()
             self.repeat_event = None
