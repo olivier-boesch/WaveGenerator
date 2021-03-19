@@ -7,7 +7,7 @@ Gui pour commande d'un arduino
 
 """
 
-__version__ = '1.2.0'
+__version__ = '1.3.0'
 
 # no console on output for windows
 import os
@@ -29,6 +29,8 @@ class WaveGenApp(App):
     generator = wavegen_mcu.WaveGenSerial(None, Logger.info)
     repeat_event = None
     generator_started = False
+    harmonic = 0
+    resonant_freq = 0.5
 
     def on_start(self):
         """what to do just before start ?"""
@@ -126,6 +128,27 @@ class WaveGenApp(App):
         if self.generator.burst(int(n), float(freq)) is not None:
             self.disconnection_occurs()
 
+    def change_tab(self, tab):
+        self.stop_generator()
+        if tab.text == 'Stationary':
+            button_list = self.root.ids['toggle1'].get_widgets('wl')
+            for b in button_list:
+                b.state = 'normal'
+
+    def set_resonant_freq(self):
+        if self.harmonic != 0:
+            self.generator.continuous(self.resonant_freq * self.harmonic)
+            Logger.info("Op: Start Generator (harmonic continuous at {:f} Hz".format(self.resonant_freq * self.harmonic))
+        else:
+            self.stop_generator()
+
+    def change_resonant_freq(self, text_freq):
+        self.resonant_freq = float(text_freq)
+        self.set_resonant_freq()
+
+    def change_harmonic(self, text_harmonic):
+        self.harmonic = int(text_harmonic)
+        self.set_resonant_freq()
 
     def stop_generator(self):
         """stop generator"""

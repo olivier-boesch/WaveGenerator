@@ -9,104 +9,159 @@
 
 BoxLayout:
     orientation: 'vertical'
-    spacing: dp(10)
-    padding: dp(20)
-    BoxLayout:
-        id : mode
-        spacing: dp(20)
-        orientation: 'horizontal'
-        Label:
-            text: 'Mode'
-        Spinner:
-            id: spinner_mode
-            values: 'Continuous', 'Burst'
-            text: self.values[0]
-            on_text: app.set_mode(self.text == 'Burst')
-    BoxLayout:
-        id: freq
-        spacing: dp(20)
-        orientation: 'horizontal'
-        Label:
-            size_hint_x: None
-            width: dp(150)
-            text: 'Frequency (Hz)'
-        Slider:
-            id: slider_freq
-            min: 0
-            max: 5
-            orientation: 'horizontal'
-            on_value: app.reflect_val('slider', input_freq, slider_freq,0,5,3)
-            on_touch_up: if args[1].grab_current == self: app.update_freq()
-        TextInput:
-            id: input_freq
-            size_hint_y: None
-            height: dp(50)
-            size_hint_x: None
-            multiline: False
-            width: dp(150)
-            text: '0.000'
-            on_text_validate: app.reflect_val('input', input_freq, slider_freq, 0, 5, 3); app.update_freq()
-    BoxLayout:
-        id: pulse
-        disabled: True
-        spacing: dp(20)
-        orientation: 'horizontal'
-        Label:
-            size_hint_x: None
-            width: dp(150)
-            text: 'Number of pulses'
-        Slider:
-            id: slider_pulses
-            min: 1
-            max: 10
-            step: 1
-            orientation: 'horizontal'
-            on_value: app.reflect_val('slider', input_pulses, slider_pulses, 1, 10, 0)
-        TextInput:
-            id: input_pulses
-            size_hint_y: None
-            height: dp(50)
-            size_hint_x: None
-            multiline: False
-            width: dp(150)
-            text: '1'
-            on_text_validate: app.reflect_val('input', input_pulses, slider_pulses, 1, 10, 0)
-    BoxLayout:
-        id: repeat_pulse
-        disabled: True
-        spacing: dp(20)
-        orientation: 'horizontal'
-        Label:
-            text: 'Repeat Bursts'
-            size_hint_x: None
-            width: dp(100)
-        Switch:
-            id: checkbox_repeat_pulses
-            size_hint_x: None
-            width: dp(50)
-            on_active: app.set_repeat(self.active)
-        Label:
-            id: every_repeat
-            text: 'every'
-            size_hint_x: None
-            width: dp(80)
-        Spinner:
-            id: spinner_repeat_pulses
-            values: '2s', '5s', '10s'
-            text: self.values[0]
-    # Label:  # placeholder only
-    BoxLayout:
-        spacing: dp(20)
-        Button:
-            text: 'Set'
-            on_release : app.set_generator(spinner_mode.text, input_freq.text, input_pulses.text)
-        Button:
-            background_color: (1,0,0)
-            text: 'Stop'
-            on_release: app.stop_generator()
+    TabbedPanel:
+        background_color: 1,1,1,0
+        do_default_tab: False
+        on_current_tab: app.change_tab(self.current_tab)
+        TabbedPanelItem:
+            text: 'Progressive'
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(10)
+                padding: dp(20)
+                BoxLayout:
+                    id : mode
+                    spacing: dp(20)
+                    orientation: 'horizontal'
+                    Label:
+                        text: 'Mode'
+                    Spinner:
+                        id: spinner_mode
+                        values: 'Continuous', 'Burst'
+                        text: self.values[0]
+                        on_text: app.set_mode(self.text == 'Burst')
+                BoxLayout:
+                    id: freq
+                    spacing: dp(20)
+                    orientation: 'horizontal'
+                    Label:
+                        size_hint_x: None
+                        width: dp(150)
+                        text: 'Frequency (Hz)'
+                    Slider:
+                        id: slider_freq
+                        min: 0
+                        max: 5
+                        orientation: 'horizontal'
+                        on_value: app.reflect_val('slider', input_freq, slider_freq,0,5,3)
+                        on_touch_up: if args[1].grab_current == self: app.update_freq()
+                    TextInput:
+                        id: input_freq
+                        size_hint_y: None
+                        height: dp(50)
+                        size_hint_x: None
+                        multiline: False
+                        width: dp(150)
+                        text: '0.000'
+                        on_text_validate: app.reflect_val('input', input_freq, slider_freq, 0, 5, 3); app.update_freq()
+                BoxLayout:
+                    id: pulse
+                    disabled: True
+                    spacing: dp(20)
+                    orientation: 'horizontal'
+                    Label:
+                        size_hint_x: None
+                        width: dp(150)
+                        text: 'Number of pulses'
+                    Slider:
+                        id: slider_pulses
+                        min: 1
+                        max: 10
+                        step: 1
+                        orientation: 'horizontal'
+                        on_value: app.reflect_val('slider', input_pulses, slider_pulses, 1, 10, 0)
+                    TextInput:
+                        id: input_pulses
+                        size_hint_y: None
+                        height: dp(50)
+                        size_hint_x: None
+                        multiline: False
+                        width: dp(150)
+                        text: '1'
+                        on_text_validate: app.reflect_val('input', input_pulses, slider_pulses, 1, 10, 0)
+                BoxLayout:
+                    id: repeat_pulse
+                    disabled: True
+                    spacing: dp(20)
+                    orientation: 'horizontal'
+                    Label:
+                        text: 'Repeat Bursts'
+                        size_hint_x: None
+                        width: dp(100)
+                    Switch:
+                        id: checkbox_repeat_pulses
+                        size_hint_x: None
+                        width: dp(50)
+                        on_active: app.set_repeat(self.active)
+                    Label:
+                        id: every_repeat
+                        text: 'every'
+                        size_hint_x: None
+                        width: dp(80)
+                    Spinner:
+                        id: spinner_repeat_pulses
+                        values: '2s', '5s', '10s'
+                        text: self.values[0]
+                # Label:  # placeholder only
+                BoxLayout:
+                    spacing: dp(20)
+                    Button:
+                        text: 'Set'
+                        on_release : app.set_generator(spinner_mode.text, input_freq.text, input_pulses.text)
+                    Button:
+                        background_color: (1,0,0)
+                        text: 'Stop'
+                        on_release: app.stop_generator()
+        TabbedPanelItem:
+            text: 'Stationary'
+            BoxLayout:
+                padding: dp(20)
+                orientation: 'vertical'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    height: dp(32)
+                    Label:
+                        text: 'base resonant frequency (Hz)'
+                    TextInput:
+                        id: base_freq
+                        text: '0.5'
+                        multiline: False
+                        on_text_validate: app.change_resonant_freq(self.text)
+                BoxLayout:
+                    orientation: 'vertical'
+                    Label:
+                        size_hint_y: None
+                        height: dp(60)
+                        text: 'Number of wavelengths'
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        spacing: dp(20)
+                        ToggleButton:
+                            id: toggle1
+                            text: '1'
+                            group: "wl"
+                            on_state: app.change_harmonic(int(self.text)) if self.state == 'down' else app.stop_generator()
+                        ToggleButton:
+                            text: '2'
+                            group: "wl"
+                            on_state: app.change_harmonic(int(self.text)) if self.state == 'down' else app.stop_generator()
+                        ToggleButton:
+                            text: '3'
+                            group: "wl"
+                            on_state: app.change_harmonic(int(self.text)) if self.state == 'down' else app.stop_generator()
+                        ToggleButton:
+                            text: '4'
+                            group: "wl"
+                            on_state: app.change_harmonic(int(self.text)) if self.state == 'down' else app.stop_generator()
+                        ToggleButton:
+                            text: '5'
+                            group: "wl"
+                            on_state: app.change_harmonic(int(self.text)) if self.state == 'down' else app.stop_generator()
+
     Label:
         size_hint_y: None
-        height: dp(20)
+        height: dp(32)
         font_size: sp(12)
         text: "Wavegen v" + __version__ + " - olivier boesch © 2020 - Lycée saint Exupéry (Marseille)"
 
