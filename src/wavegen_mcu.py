@@ -14,7 +14,7 @@ if platform in ['win', 'linux']:
 elif platform == 'android':
     from usb4a import usb
     from usbserial4a import serial4a
-    from serial import SerialException
+    from usbserial4a.utilserial4a import SerialException
 
 from kivy.logger import Logger
 
