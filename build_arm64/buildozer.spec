@@ -7,7 +7,7 @@ title = Waveform Generator
 package.name = wavegen
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = ob.org
+package.domain = org.ob
 
 # (str) Source code where the main.py live
 source.dir = ../src
@@ -36,7 +36,7 @@ version.filename = %(source.dir)s/main.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==master,pyserial==3.4,usb4a,usbserial4a
+requirements = python3,kivy==master,pyserial==3.5,usb4a,usbserial4a
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -52,7 +52,7 @@ presplash.filename = %(source.dir)s/../build_arm64/splash.png
 icon.filename = %(source.dir)s/../build_arm64/icon.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
-orientation = all
+orientation = sensorLandscape
 
 # (list) List of service to declare
 #services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
@@ -75,7 +75,7 @@ osx.kivy_version = 1.9.1
 #
 
 # (bool) Indicate if the application should be fullscreen or not
-fullscreen = 0
+fullscreen = 1
 
 # (string) Presplash background color (for new android toolchain)
 # Supported formats are: #RRGGBB #AARRGGBB or one of the following names:
@@ -85,10 +85,10 @@ fullscreen = 0
 #android.presplash_color = #FFFFFF
 
 # (list) Permissions
-# android.permissions = WAKE_LOCK
+android.permissions = WAKE_LOCK
 
 # (int) Target Android API, should be as high as possible.
-android.api = 28
+android.api = 30
 
 # (int) Minimum API your APK will support.
 #android.minapi = 21
@@ -186,7 +186,7 @@ android.api = 28
 #android.ouya.icon.filename = %(source.dir)s/data/ouya_icon.png
 
 # (str) XML file to include as an intent filters in <activity> tag
-#android.manifest.intent_filters =
+android.manifest.intent_filters = usb.xml
 
 # (str) launchMode to set for the main activity
 #android.manifest.launch_mode = standard
@@ -213,7 +213,7 @@ android.wakelock = True
 #android.uses_library =
 
 # (str) Android logcat filters to use
-#android.logcat_filters = *:S python:D
+android.logcat_filters = *:S python:D
 
 # (bool) Copy library instead of making a libpymodules.so
 #android.copy_libs = 1
