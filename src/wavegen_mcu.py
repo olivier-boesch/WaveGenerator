@@ -124,7 +124,6 @@ class WaveGenSerial:
         n = self._freq_to_motor_freq(n)
         return self._send_command("B{:d},{:d}".format(n, motor_pulse_freq))
 
-
     def stop(self):
         """stops the generator"""
         return self._send_command("S")

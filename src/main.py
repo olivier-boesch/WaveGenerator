@@ -19,7 +19,7 @@ Config.set("graphics", "window_state", "maximized")
 
 from kivy.app import App
 from kivy.logger import Logger, LOG_LEVELS
-Logger.setLevel((LOG_LEVELS['error']))
+Logger.setLevel((LOG_LEVELS['debug']))
 from kivy.factory import Factory
 from kivy.clock import Clock
 import wavegen_mcu
@@ -142,7 +142,6 @@ class WaveGenApp(App):
             self.repeat_event = None
 
 
-if __name__ == "__main__":
-    # create and start app
-    app = WaveGenApp()
-    app.run()
+# create and start app
+app = WaveGenApp()
+app.run()
