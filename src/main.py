@@ -44,12 +44,16 @@ class WaveGenApp(App):
         if self.generator_started:
             self.generator.stop()
         self.generator.disconnect()
+        
+    def on_pause(self):
+        """what todo when the app is paused -> leave"""
+        return False
 
     def connect(self):
         """ask the generator to connect to the arduino"""
         ret = self.generator.connect()
         if ret is None:
-            Clock.schedule_once(lambda dt: self.connect(), 0.5)
+            Clock.schedule_once(lambda dt: self.connect(), 1)
         elif ret == False:
             d = Factory.NoBoxPopup()
             d.open()

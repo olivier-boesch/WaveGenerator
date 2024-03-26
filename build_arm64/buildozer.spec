@@ -74,14 +74,14 @@ osx.kivy_version = 1.9.1
 #
 
 # (bool) Indicate if the application should be fullscreen or not
-fullscreen = 1
+fullscreen = 0
 
 # (string) Presplash background color (for android toolchain)
 # Supported formats are: #RRGGBB #AARRGGBB or one of the following names:
 # red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
-#android.presplash_color = #FFFFFF
+android.presplash_color = #000000
 
 # (string) Presplash animation using Lottie format.
 # see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/
@@ -101,10 +101,10 @@ android.permissions = android.permission.INTERNET, (name=android.permission.WRIT
 # android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-android.api = 31
+android.api = 34
 
 # (int) Minimum API your APK / AAB will support.
-# android.minapi = 21
+android.minapi = 27
 
 # (int) Android SDK version to use
 #android.sdk = 20
@@ -147,7 +147,7 @@ android.api = 31
 
 # (str) Extra xml to write directly inside the <manifest> element of AndroidManifest.xml
 # use that parameter to provide a filename from where to load your custom XML code
-#android.extra_manifest_xml = ./src/android/extra_manifest.xml
+android.extra_manifest_xml = extra_manifest.xml
 
 # (str) Extra xml to write directly inside the <manifest><application> tag of AndroidManifest.xml
 # use that parameter to provide a filename from where to load your custom XML arguments:
@@ -236,10 +236,12 @@ android.api = 31
 #android.ouya.icon.filename = %(source.dir)s/data/ouya_icon.png
 
 # (str) XML file to include as an intent filters in <activity> tag
-# android.manifest.intent_filters = ./intent_filter.xml
+# removed as it doesn't work well
+# android.manifest.intent_filters = intent_filter.xml
 
 # (list) Copy these files to src/main/res/xml/ (used for example with intent-filters)
-# android.res_xml = intent_filter.xml
+# removed as it doesn't work well
+# android.res_xml = device_filter.xml
 
 # (str) launchMode to set for the main activity
 #android.manifest.launch_mode = standard
@@ -290,7 +292,7 @@ android.archs = arm64-v8a
 # android.numeric_version = 1
 
 # (bool) enables Android auto backup feature (Android API >=23)
-android.allow_backup = True
+android.allow_backup = False
 
 # (str) XML file for custom backup rules (see official auto backup documentation)
 # android.backup_rules =
@@ -402,7 +404,7 @@ ios.codesign.allowed = false
 [buildozer]
 
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
-log_level = 2
+log_level = 1
 
 # (int) Display warning if buildozer is run as root (0 = False, 1 = True)
 warn_on_root = 1
