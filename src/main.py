@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/bin/env python3
 """
 
 Commande de cuve à vagues NOVA Physics
@@ -6,9 +6,6 @@ Commande de cuve à vagues NOVA Physics
 Gui pour commande d'un arduino
 
 """
-
-__version__ = '1.4.0'
-
 # no console on output for windows
 import os
 if os.name == 'nt':

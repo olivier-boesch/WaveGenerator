@@ -2,7 +2,7 @@
 # Gui pour commande d'un arduino
 # fichier de définition d'UI
 
-#:import __version__ main.__version__
+#:import __version__ version.__version__
 
 <Widget>
     font_name: 'Poppins-Regular.ttf'
@@ -116,7 +116,7 @@ BoxLayout:
         size_hint_y: None
         height: dp(32)
         font_size: sp(12)
-        text: "Wavegen v" + __version__ + " - olivier boesch © 2020-2021 - Lycée saint Exupéry (Marseille)"
+        text: "Wavegen v " + __version__ + " - olivier boesch © 2020-2021 - Lycée saint Exupéry (Marseille)"
 
 <WrappingLabel@Label>
     text_size: self.size
