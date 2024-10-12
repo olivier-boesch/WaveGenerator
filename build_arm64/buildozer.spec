@@ -33,11 +33,11 @@ source.include_patterns = images/*
 
 # (str) Application versioning (method 2)
 version.regex = __version__ = ['"](.*)['"]
-version.filename = %(source.dir)s/main.py
+version.filename = %(source.dir)s/version.py
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.3.0,pyserial==3.5,usb4a,usbserial4a
+requirements = python3,kivy,pyserial,usb4a,usbserial4a
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -237,11 +237,11 @@ android.extra_manifest_xml = extra_manifest.xml
 
 # (str) XML file to include as an intent filters in <activity> tag
 # removed as it doesn't work well
-# android.manifest.intent_filters = intent_filter.xml
+android.manifest.intent_filters = intent_filter.xml
 
 # (list) Copy these files to src/main/res/xml/ (used for example with intent-filters)
 # removed as it doesn't work well
-# android.res_xml = device_filter.xml
+android.res_xml = device_filter.xml
 
 # (str) launchMode to set for the main activity
 #android.manifest.launch_mode = standard
