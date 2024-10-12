@@ -1,0 +1,7 @@
+Kivy
+pyserial
+docutils
+setuptools
+Cython
+buildozer
+colorama
